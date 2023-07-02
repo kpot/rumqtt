@@ -352,6 +352,8 @@ pub enum TlsConfiguration {
     Rustls(Arc<ClientConfig>),
     #[cfg(feature = "use-native-tls")]
     Native,
+    #[cfg(feature = "use-native-tls")]
+    ComplexNative(native_tls::TlsConnector),
 }
 
 #[cfg(feature = "use-rustls")]
