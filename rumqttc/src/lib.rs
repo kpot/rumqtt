@@ -353,7 +353,7 @@ pub enum TlsConfiguration {
     #[cfg(feature = "use-native-tls")]
     Native,
     #[cfg(feature = "use-native-tls")]
-    ComplexNative(native_tls::TlsConnector),
+    NativeConnector(native_tls::TlsConnector),
 }
 
 #[cfg(feature = "use-rustls")]
