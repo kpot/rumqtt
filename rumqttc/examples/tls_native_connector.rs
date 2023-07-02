@@ -19,7 +19,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //     let ca = include_bytes!("/home/tekjar/tlsfiles/ca.cert.pem");
     //     let client_cert = include_bytes!("/home/tekjar/tlsfiles/device-1.cert.pem");
     //     let client_key = include_bytes!("/home/tekjar/tlsfiles/device-1.key.pem");
-    let identity = native_tls::Identity::from_pkcs8(&client_key, &client_cert).unwrap();
+    let identity = native_tls::Identity::from_pkcs8(&client_cert, &client_key).unwrap();
     let ca = native_tls::Certificate::from_pem(&ca).unwrap();
     let tls_connector = native_tls::TlsConnector::builder()
         .add_root_certificate(ca)
