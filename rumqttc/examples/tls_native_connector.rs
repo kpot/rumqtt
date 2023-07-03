@@ -4,7 +4,7 @@ use std::error::Error;
 #[cfg(feature = "use-native-tls")]
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    use rumqttc::{self, AsyncClient, Key, MqttOptions, TlsConfiguration, Transport};
+    use rumqttc::{self, AsyncClient, MqttOptions, TlsConfiguration, Transport};
 
     pretty_env_logger::init();
     color_backtrace::install();
@@ -19,13 +19,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //     let ca = include_bytes!("/home/tekjar/tlsfiles/ca.cert.pem");
     //     let client_cert = include_bytes!("/home/tekjar/tlsfiles/device-1.cert.pem");
     //     let client_key = include_bytes!("/home/tekjar/tlsfiles/device-1.key.pem");
-    let identity = native_tls::Identity::from_pkcs8(&client_cert, &client_key).unwrap();
-    let ca = native_tls::Certificate::from_pem(&ca).unwrap();
+    let identity = native_tls::Identity::from_pkcs8(&client_cert, &client_key)
+        .expect("Client key and certificate to be valid");
+    let ca = native_tls::Certificate::from_pem(&ca).expect("CA certificate to be valid");
     let tls_connector = native_tls::TlsConnector::builder()
         .add_root_certificate(ca)
         .identity(identity)
         // // Un-comment to support self-signed certificates
         // .danger_accept_invalid_certs(true)
+        // // Also useful for testing
         // .danger_accept_invalid_hostnames(true)
         .build()
         .unwrap();
